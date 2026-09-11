@@ -18,6 +18,11 @@ export function home() {
     { l: "Raporlama", line: "Rapor için veri toplamak biter; yönetim özeti her hafta kendi gelir." }
   ];
   const kinds = ["sales", "support", "finance", "ops", "report"];
+  const rail = [
+    ["01", "neden", "Neden"], ["02", "akis", "Akış"], ["03", "cozumler", "Çözümler"], ["04", "isler", "İşler"],
+    ["05", "sektorler", "Sektörler"], ["06", "kiyas", "Kıyas"], ["07", "surec", "Süreç"], ["08", "sss", "SSS"]
+  ];
+  const idx = (n, label) => `<span class="idx"><b>${n}</b>${esc(label)}</span>`;
 
   return `${head({
     title: "",
@@ -25,34 +30,35 @@ export function home() {
     path: "/"
   })}
 ${navbar("/")}
+<nav class="rail" aria-label="Bölümler">
+  ${rail.map(([n, id, l]) => `<a href="#${id}"><b>${n}</b><span>${esc(l)}</span></a>`).join("")}
+</nav>
 <main>
 <!-- HERO -->
-<section class="sec-dark hero" data-hero data-lines='${JSON.stringify(heroChips.map((c) => c.line)).replace(/'/g, "&#39;")}'>
-  <div class="hero-glow"></div>
-  <div class="wrap hero-in">
-    <div>
-      <div class="eyebrow">AI destekli iş sistemleri · İstanbul</div>
-      <h1>Tekrar eden işleri ekibiniz değil, <span class="hl">sisteminiz</span> yapsın</h1>
-      <div class="chips" role="tablist" aria-label="Çözüm alanları">
+<section class="hero" data-hero data-lines='${JSON.stringify(heroChips.map((c) => c.line)).replace(/'/g, "&#39;")}'>
+  <div class="wrap">
+    <div class="eyebrow">AI destekli iş sistemleri · İstanbul</div>
+    <h1>Tekrar eden işleri ekibiniz değil, <span class="hl">sisteminiz</span> yapsın</h1>
+    <p class="lead">Hazır paket değil: mevcut e-posta, WhatsApp, Excel, muhasebe ve CRM programlarınıza bağlanır, gerçek işlerinizle test edilir, ekibinizin günlük kullanımına açılır. Ekibiniz karar verir; sistem tekrar eden işi yürütür.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="/iletisim/">Ücretsiz Analiz Planla ${arrow}</a>
+      <a class="btn btn-ghost" href="/cozumler/">Çözümleri İncele</a>
+    </div>
+    <p class="fine">İhtiyaç analizi ücretsiz · 20 dk · Başvuruya 1 iş günü içinde dönüş</p>
+
+    <div class="feed">
+      <div class="feed-tabs" role="tablist" aria-label="Çözüm alanları">
         ${heroChips.map((c, i) => `<button class="chip${i === 0 ? " is-active" : ""}" type="button" role="tab">${esc(c.l)}</button>`).join("")}
       </div>
       <p class="rotating" aria-live="polite"><span>${esc(heroChips[0].line)}</span></p>
-      <p class="lead">Hazır paket değil: mevcut e-posta, WhatsApp, Excel, muhasebe ve CRM programlarınıza bağlanır, gerçek işlerinizle test edilir, ekibinizin günlük kullanımına açılır. Ekibiniz karar verir; sistem tekrar eden işi yürütür.</p>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="/iletisim/">Ücretsiz Analiz Planla ${arrow}</a>
-        <a class="btn btn-ghost" href="/cozumler/">Çözümleri İncele</a>
-      </div>
-      <p class="fine mono">İhtiyaç analizi ücretsiz · 20 dk · Başvuruya 1 iş günü içinde dönüş</p>
-    </div>
-    <div>
-      ${panelShell(kinds.map((k, i) => mockPanel(k, { active: i === 0 })).join(""))}
+      ${panelShell(kinds.map((k, i) => mockPanel(k, { active: i === 0 })).join(""), { title: "OptiosLab · Canlı akış" })}
       <p class="panel-note">örnek ekran · veriler temsilidir</p>
     </div>
   </div>
 </section>
 
-<!-- STAT ŞERİDİ -->
-<section class="sec sec-light">
+<!-- RAKAMLAR -->
+<section class="sec slim">
   <div class="wrap">
     <div class="stats">
       <div class="stat reveal"><b>20 dk</b><strong>Ücretsiz analiz</strong><span>ilk görüşme, süreç seçimi</span></div>
@@ -60,18 +66,14 @@ ${navbar("/")}
       <div class="stat reveal" data-delay="2"><b>6</b><strong>Çözüm alanı</strong><span>satıştan raporlamaya</span></div>
       <div class="stat reveal" data-delay="3"><b>TR · DE</b><strong>Türkiye ve Almanya</strong><span>Türkçe, Almanca, İngilizce</span></div>
     </div>
-    <div class="stat-note reveal">
-      <span class="mono">Sisteme devredilebilen işlerden bazıları:</span>
-      ${tasks.slice(0, 6).map((t) => `<a class="pill" href="/cozumler/${t.s}/">${esc(t.t)}</a>`).join("")}
-    </div>
   </div>
 </section>
 
-<!-- NEDEN -->
-<section class="sec sec-light" style="padding-top:0">
-  <div class="wrap two">
-    <div class="sticky reveal">
-      <div class="eyebrow">Neden OptiosLab</div>
+<!-- 01 NEDEN -->
+<section class="sec" id="neden" data-rail>
+  <div class="wrap blk">
+    <div class="blk-head reveal">
+      ${idx("01", "Neden OptiosLab")}
       <h2>Otomasyonda en çok sorulan dört soruya net cevap</h2>
     </div>
     <ul class="numlist reveal" data-delay="1">
@@ -80,71 +82,55 @@ ${navbar("/")}
   </div>
 </section>
 
-<!-- TUR -->
-<section class="sec sec-dark skew" data-tour>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Sistemin içinde bir tur</div>
+<!-- 02 AKIŞ -->
+<section class="sec" id="akis" data-rail>
+  <div class="wrap blk wide">
+    <div class="blk-head reveal">
+      ${idx("02", "Sistemin içinde bir tur")}
       <h2>Bir talep sisteme düştüğünde ne olur?</h2>
-      <p class="lead">Beş adımda akışın içinden geçin. Kaydırdıkça ekran değişir; talep girişten rapora kadar aynı sistemde ilerler.</p>
+      <p class="lead">Talep girişten rapora kadar aynı sistemde ilerler. Hangi adımı sistemin yapacağı, hangi kararı ekibinizin vereceği baştan yazılır.</p>
     </div>
-    <div class="tour">
-      <div class="tour-panel">
-        ${panelShell(["sales", "support", "finance", "ops", "report"].map((k, i) => mockPanel(k, { active: i === 0 })).join(""), { title: "OptiosLab · Akış görünümü" })}
-        <p class="panel-note">örnek ekran · veriler temsilidir</p>
-      </div>
-      <div class="tour-steps">
-        ${tour.map((s, i) => `
-        <div class="tour-step${i === 0 ? " is-active" : ""}">
-          <span class="n">0${i + 1}</span>
-          <div><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p><div class="tag-line">${esc(s.tag)}</div></div>
-        </div>`).join("")}
-      </div>
+    <div class="pipe reveal" data-delay="1">
+      ${tour.map((s, i) => `
+      <div class="paper pipe-card">
+        <span class="n">0${i + 1}</span>
+        <h3>${esc(s.t)}</h3>
+        <p>${esc(s.d)}</p>
+        <div class="tag-line">${esc(s.tag)}</div>
+      </div>`).join("")}
     </div>
   </div>
-  <div class="tour-dots" aria-hidden="true">${tour.map(() => "<i></i>").join("")}</div>
 </section>
 
-<!-- ÇÖZÜMLER -->
-<section class="sec sec-soft" id="cozumler">
-  <div class="wrap">
-    <div class="sec-head split reveal">
-      <div>
-        <div class="eyebrow">Çözümler</div>
-        <h2>Altı çözüm alanı, tek mühendislik ekibi</h2>
-      </div>
+<!-- 03 ÇÖZÜMLER -->
+<section class="sec" id="cozumler" data-rail>
+  <div class="wrap blk wide">
+    <div class="blk-head reveal">
+      ${idx("03", "Çözümler")}
+      <h2>Altı çözüm alanı, tek mühendislik ekibi</h2>
       <a class="more" href="/cozumler/">Tümünü gör</a>
     </div>
-    <div class="cards cards-2" style="margin-bottom:16px">
-      ${solutions.slice(0, 2).map((s, i) => `
-      <a class="card lg reveal" data-delay="${i}" href="/cozumler/${s.slug}/">
+    <div class="cards cards-3">
+      ${solutions.map((s, i) => `
+      <a class="card reveal" data-delay="${i % 3}" href="/cozumler/${s.slug}/">
         <span class="n">${s.num}</span>
-        <h3>${esc(s.title)}</h3>
+        <h3>${esc(s.short)}</h3>
         <span class="kicker">${esc(s.kicker)}</span>
         <p>${esc(s.summary)}</p>
         <span class="go">İncele</span>
       </a>`).join("")}
     </div>
-    <div class="cards cards-4">
-      ${solutions.slice(2).map((s, i) => `
-      <a class="card reveal" data-delay="${i}" href="/cozumler/${s.slug}/">
-        <span class="n">${s.num}</span>
-        <h3>${esc(s.short)}</h3>
-        <span class="kicker">${esc(s.kicker)}</span>
-        <p>${esc(s.summary)}</p>
-      </a>`).join("")}
-    </div>
   </div>
 </section>
 
-<!-- İŞ KATALOĞU -->
-<section class="sec sec-light" style="padding-top:0">
-  <div class="wrap two">
-    <div class="sticky reveal">
-      <div class="eyebrow">Sisteme devredilebilen işler</div>
+<!-- 04 İŞLER -->
+<section class="sec" id="isler" data-rail>
+  <div class="wrap blk">
+    <div class="blk-head reveal">
+      ${idx("04", "Sisteme devredilebilen işler")}
       <h2>12 iş,<br>6 çözüm</h2>
-      <p class="muted" style="margin-top:16px;max-width:38ch">Hepsini bir anda kurmak zorunda değilsiniz. En çok zaman kaybettiren işten başlar, zaman içinde büyütürüz.</p>
-      <a class="btn btn-dark" href="/cozumler/" style="margin-top:22px">Çözümleri incele</a>
+      <p class="lead">Hepsini bir anda kurmak zorunda değilsiniz. En çok zaman kaybettiren işten başlar, zaman içinde büyütürüz.</p>
+      <a class="more" href="/cozumler/">Çözümleri incele</a>
     </div>
     <div class="tasks reveal" data-delay="1">
       ${tasks.map((t) => `<a class="task" href="/cozumler/${t.s}/"><span>${esc(t.t)}</span><small>${esc(solBySlug(t.s).short)}</small></a>`).join("")}
@@ -152,43 +138,31 @@ ${navbar("/")}
   </div>
 </section>
 
-<!-- SEKTÖRLER -->
-<section class="sec sec-dark skew" id="sektorler" data-tabs>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Sektörler</div>
+<!-- 05 SEKTÖRLER -->
+<section class="sec" id="sektorler" data-rail>
+  <div class="wrap blk wide">
+    <div class="blk-head reveal">
+      ${idx("05", "Sektörler")}
       <h2>Sektörünüzün kendi problemleri var</h2>
       <p class="lead">Üretimdeki termin sorusu ile klinikteki randevu hatırlatması aynı iş değil. Her sektöre kendi akışıyla yaklaşıyoruz.</p>
     </div>
-    <div class="sectors reveal" data-delay="1">
-      <div class="sector-tabs" role="tablist">
-        ${sectors.map((s, i) => `<button class="sector-tab${i === 0 ? " is-active" : ""}" type="button" role="tab"><span class="n">${s.num}</span><span>${esc(s.title)}</span><span class="arr">→</span></button>`).join("")}
-      </div>
-      <div>
-        ${sectors.map((s, i) => `
-        <div class="sector-pane${i === 0 ? " is-active" : ""}">
-          <div class="pane">
-            <div class="pane-head">
-              <div><span class="mono" style="color:var(--acc)">${s.num} — SEKTÖR</span><h3 style="margin-top:8px">${esc(s.title)}</h3></div>
-              <a class="btn btn-ghost" href="/sektorler/${s.slug}/">İncele ${arrow}</a>
-            </div>
-            <p class="lead">${esc(s.lead)}</p>
-            <div class="sub">Sık karşılaşılan sorunlar</div>
-            <ul class="probs">${s.problems.slice(0, 4).map((p, k) => `<li><span class="n">0${k + 1}</span><span>${esc(p)}</span></li>`).join("")}</ul>
-            <div class="sub">Bu sorunları çözen sistemler</div>
-            <div class="sol-links">${s.solutions.map((x) => `<a href="/cozumler/${x}/">${esc(solBySlug(x).short)}</a>`).join("")}</div>
-          </div>
-        </div>`).join("")}
-      </div>
+    <div class="tiles">
+      ${sectors.map((s, i) => `
+      <a class="paper tile reveal" data-delay="${i % 4}" href="/sektorler/${s.slug}/">
+        <span class="n">${s.num} — SEKTÖR</span>
+        <h3>${esc(s.title)}</h3>
+        <ul>${s.problems.slice(0, 2).map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+        <span class="go">Akışı gör</span>
+      </a>`).join("")}
     </div>
   </div>
 </section>
 
-<!-- KIYAS -->
-<section class="sec sec-soft">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Dürüst kıyas</div>
+<!-- 06 KIYAS -->
+<section class="sec" id="kiyas" data-rail>
+  <div class="wrap blk wide">
+    <div class="blk-head reveal">
+      ${idx("06", "Dürüst kıyas")}
       <h2>Manuel süreç mi, kurulu sistem mi?</h2>
       <p class="lead">İkisi de çalışır. Fark, bilginin nerede durduğuna ve işin kime bağlı olduğuna gelince ortaya çıkar.</p>
     </div>
@@ -202,10 +176,32 @@ ${navbar("/")}
   </div>
 </section>
 
+<!-- 07 SÜREÇ -->
+<section class="sec" id="surec" data-rail>
+  <div class="wrap blk wide">
+    <div class="blk-head reveal">
+      ${idx("07", "Nasıl çalışıyoruz")}
+      <h2>Altı adım, her aşamada yazılı çıktı</h2>
+    </div>
+    <div class="steps reveal" data-delay="1">
+      ${process.map((p, i) => `<div class="step"><span class="n">0${i + 1}</span><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></div>`).join("")}
+    </div>
+    <div class="pricebox reveal">
+      <div class="pricebox-head">
+        <h3>Fiyatı ne belirler?</h3>
+        <span class="pill" style="color:var(--acc);border-color:var(--acc-3)">■&nbsp; İhtiyaç analizi ücretsiz</span>
+      </div>
+      <div class="cards">
+        ${pricing.map((p) => `<div class="card"><h3 style="font-size:1.05rem">${esc(p.t)}</h3><p>${esc(p.d)}</p></div>`).join("")}
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ENTEGRASYON -->
-<section class="sec sec-light">
-  <div class="wrap">
-    <div class="sec-head reveal">
+<section class="sec">
+  <div class="wrap blk">
+    <div class="blk-head reveal">
       <div class="eyebrow">Entegrasyonlar</div>
       <h2>Kullandığınız programlarla konuşur</h2>
       <p class="lead">Program değiştirmenizi istemiyoruz. Sistem mevcut araçlarınıza bağlanır; bilgiyi oradan okur, oraya yazar.</p>
@@ -217,34 +213,12 @@ ${navbar("/")}
   </div>
 </section>
 
-<!-- SÜREÇ -->
-<section class="sec sec-soft">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Nasıl çalışıyoruz</div>
-      <h2>Altı adım, her aşamada yazılı çıktı</h2>
-    </div>
-    <div class="timeline reveal" data-delay="1">
-      ${process.map((p, i) => `<div class="tl"><span class="n">0${i + 1}</span><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></div>`).join("")}
-    </div>
-    <div class="pricebox reveal">
-      <div class="pricebox-head">
-        <h3>Fiyatı ne belirler?</h3>
-        <span class="pill" style="color:var(--acc-ink);border-color:var(--acc-2)">■&nbsp; İhtiyaç analizi ücretsiz</span>
-      </div>
-      <div class="cards">
-        ${pricing.map((p) => `<div class="card"><h3 style="font-size:1.05rem">${esc(p.t)}</h3><p>${esc(p.d)}</p></div>`).join("")}
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- TAAHHÜT -->
-<section class="sec sec-light" style="padding-top:0">
+<section class="sec">
   <div class="wrap">
     <div class="commit reveal">
       <div class="commit-head">
-        <div><div class="eyebrow" style="color:var(--acc)">Baştan netleşen şeyler</div><h2>Sözleşmeye giren üç madde</h2></div>
+        <div><div class="eyebrow">Baştan netleşen şeyler</div><h2>Sözleşmeye giren üç madde</h2></div>
         <p>Pazarlama vaadi değil; her teklifin içinde yazılı olur.</p>
       </div>
       <div class="commit-grid">
@@ -261,7 +235,7 @@ ${navbar("/")}
   </div>
 </section>
 
-${faqBlock(faq.slice(0, 6))}
+${faqBlock(faq.slice(0, 6), { idx: "08" })}
 ${cta()}
 </main>
 ${footer()}`;
@@ -531,7 +505,7 @@ ${pageHero({
       <div class="eyebrow">Başlangıç</div>
       <h2>OptiosLab nasıl çalışır?</h2>
     </div>
-    <div class="reveal" data-delay="1" style="display:grid;gap:18px;font-size:1.1rem;color:var(--ink-2);max-width:62ch">
+    <div class="reveal" data-delay="1" style="display:grid;gap:18px;font-size:1.1rem;color:var(--tx-muted);max-width:62ch">
       ${story.map((p) => `<p>${esc(p)}</p>`).join("")}
     </div>
   </div>

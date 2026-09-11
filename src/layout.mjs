@@ -88,21 +88,24 @@ export function cta({ title = "Süreçlerinizi konuşalım", lead, facts = true 
   lead = lead ||
     "20 dakikalık bir görüşmede en çok zaman kaybettiren sürecinizi dinleyip hangi sistemle başlamanız gerektiğini birlikte belirleyelim. Ardından kapsam, takvim ve ölçütlerden oluşan yazılı bir yol haritası gönderelim. İhtiyaç analizi ücretsizdir.";
   return `
-<section class="sec sec-dark skew-top-only cta" id="iletisim">
+<section class="sec cta" id="iletisim">
   <div class="wrap">
-    <h2 class="reveal">${esc(title)}</h2>
-    <p class="lead reveal" data-delay="1">${esc(lead)}</p>
-    <div class="btn-row reveal" data-delay="2">
-      <a class="btn btn-primary" href="/iletisim/">Ücretsiz Analiz Planla ${arrow}</a>
-      <a class="btn btn-ghost" href="mailto:${site.email}">${site.email}</a>
+    <div class="paper cta-paper reveal">
+      <div class="eyebrow">Sonraki adım</div>
+      <h2>${esc(title)}</h2>
+      <p class="lead">${esc(lead)}</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/iletisim/">Ücretsiz Analiz Planla ${arrow}</a>
+        <a class="btn btn-ghost" href="mailto:${site.email}">${site.email}</a>
+      </div>
+      ${facts ? `
+      <div class="cta-facts">
+        <div><b>20 dk</b><span>ücretsiz analiz görüşmesi</span></div>
+        <div><b>1 iş günü</b><span>başvuruya dönüş</span></div>
+        <div><b>4–6 hafta</b><span>ilk sistem canlıda hedefi</span></div>
+        <div><b>TR · DE · EN</b><span>görüşme dili</span></div>
+      </div>` : ""}
     </div>
-    ${facts ? `
-    <div class="cta-facts reveal" data-delay="3">
-      <div><b>20 dk</b><span>ücretsiz analiz görüşmesi</span></div>
-      <div><b>1 iş günü</b><span>başvuruya dönüş</span></div>
-      <div><b>4–6 hafta</b><span>ilk sistem canlıda hedefi</span></div>
-      <div><b>TR · DE · EN</b><span>görüşme dili</span></div>
-    </div>` : ""}
   </div>
 </section>`;
 }
@@ -155,8 +158,7 @@ export function footer() {
 
 export function pageHero({ crumbs = [], eyebrow, title, kicker, lead, buttons, compact = false, aside = "" }) {
   return `
-<section class="sec-dark page-hero${compact ? " compact" : ""}">
-  <div class="hero-glow"></div>
+<section class="page-hero${compact ? " compact" : ""}">
   <div class="wrap">
     ${crumbs.length ? `<nav class="crumbs" aria-label="Sayfa yolu"><a href="/">Ana Sayfa</a>${crumbs.map((c) => `<span>${c.href ? `<a href="${c.href}">${esc(c.label)}</a>` : esc(c.label)}</span>`).join("")}</nav>` : ""}
     <div class="${aside ? "hero-in" : ""}">
@@ -173,14 +175,14 @@ export function pageHero({ crumbs = [], eyebrow, title, kicker, lead, buttons, c
 </section>`;
 }
 
-export function faqBlock(items, { id = "sss", title = "Merak edilenler", eyebrow = "Sık sorulanlar", dark = false } = {}) {
+export function faqBlock(items, { id = "sss", title = "Merak edilenler", eyebrow = "Sık sorulanlar", dark = false, idx = "" } = {}) {
   return `
-<section class="sec ${dark ? "sec-dark" : "sec-light"}" id="${id}">
-  <div class="wrap two">
-    <div class="sticky reveal">
-      <div class="eyebrow">${esc(eyebrow)}</div>
+<section class="sec" id="${id}" data-rail="${id}">
+  <div class="wrap blk">
+    <div class="blk-head reveal">
+      ${idx ? `<span class="idx"><b>${idx}</b>${esc(eyebrow)}</span>` : `<div class="eyebrow">${esc(eyebrow)}</div>`}
       <h2>${esc(title)}</h2>
-      <p class="muted" style="margin-top:14px">Başka sorunuz mu var? <a href="/iletisim/" style="color:${dark ? "var(--acc)" : "var(--acc-ink)"};font-weight:600">Bize yazın →</a></p>
+      <p class="muted" style="margin-top:14px">Başka sorunuz mu var? <a href="/iletisim/" style="color:var(--acc);font-weight:600">Bize yazın →</a></p>
     </div>
     <div class="faq reveal" data-delay="1">
       ${items.map((f) => `<details><summary>${esc(f.q)}<i class="plus"></i></summary><p>${esc(f.a)}</p></details>`).join("")}

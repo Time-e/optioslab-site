@@ -60,26 +60,23 @@
     document.addEventListener("visibilitychange", () => (document.hidden ? clearInterval(timer) : start()));
   }
 
-  /* ---- tur: sticky adımlar ---- */
-  const tour = $("[data-tour]");
-  if (tour) {
-    const steps = $$(".tour-step", tour);
-    const views = $$(".panel-view", tour);
-    const dots = $(".tour-dots");
-    const dotEls = dots ? $$("i", dots) : [];
-    const activate = (n) => {
-      steps.forEach((s, k) => s.classList.toggle("is-active", k === n));
-      views.forEach((v, k) => v.classList.toggle("is-active", k === n));
-      dotEls.forEach((d, k) => d.classList.toggle("is-active", k === n));
-    };
+  /* ---- sol indeks rayı (ana sayfa) ---- */
+  const rail = $(".rail");
+  if (rail && "IntersectionObserver" in window) {
+    const links = $$("a", rail);
+    const secs = $$("[data-rail]");
+    const byId = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => { if (en.isIntersecting) activate(steps.indexOf(en.target)); });
-    }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
-    steps.forEach((s) => io.observe(s));
-    activate(0);
-    if (dots) {
-      const vis = new IntersectionObserver((en) => dots.classList.toggle("is-visible", en[0].isIntersecting), { threshold: 0.05 });
-      vis.observe(tour);
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        links.forEach((a) => a.classList.remove("is-active"));
+        byId.get(en.target.id)?.classList.add("is-active");
+      });
+    }, { rootMargin: "-40% 0px -50% 0px", threshold: 0 });
+    secs.forEach((s) => io.observe(s));
+    const heroEl = $("[data-hero]");
+    if (heroEl) {
+      new IntersectionObserver((en) => rail.classList.toggle("is-visible", !en[0].isIntersecting), { threshold: 0.1 }).observe(heroEl);
     }
   }
 
