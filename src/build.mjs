@@ -9,7 +9,8 @@ import * as P from "./pages.mjs";
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
 const out = resolve(process.argv[2] || root);
-const version = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+// Önbellek etiketi: her derlemede değişir (aynı gün içindeki yayınlar da ayrışsın)
+const version = Date.now().toString(36);
 
 const write = (rel, html) => {
   const file = join(out, rel);
