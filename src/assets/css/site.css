@@ -1,7 +1,8 @@
 /* =========================================================
    OptiosLab — site.css
-   Yapı: Mockupsoft (bölüm düzeni, eğik ayırıcılar, grid arka plan)
-   Renk: yeşil tonlar · Doku: Quest tarzı film grain
+   Yapı: Mockupsoft (bölüm düzeni, eğik ayırıcılar)
+   Renk: koyu yeşil-siyah + açık adaçayı (sage) yüzeyler · Doku: Quest tarzı film grain
+   Arka planlar: grid yok, yumuşak radial gradient
    ========================================================= */
 
 :root {
@@ -15,20 +16,22 @@
   --tx-d: #eef5f0;
   --tx-d-muted: #9db3a7;
 
-  /* açık yüzeyler */
-  --lt-0: #ffffff;
-  --lt-1: #f3f7f4;
-  --lt-2: #e8efea;
-  --line-l: #dbe5de;
+  /* açık yüzeyler — adaçayı (sage): yeşilin soluk, mineral tonu */
+  --lt-0: #f8fbf8;   /* kartlar, form, tablo zemini */
+  --lt-1: #eef3ee;   /* yumuşak bölüm zemini */
+  --lt-2: #e3ebe4;   /* fotoğraf yer tutucu, vurgulu hücre */
+  --lt-3: #d9e4da;   /* gradient uç tonu */
+  --line-l: #d2dcd4;
   --ink: #0b1a13;
-  --ink-2: #33453c;
-  --ink-muted: #5d6f65;
+  --ink-2: #2f4037;
+  --ink-muted: #5b6d63;
 
   /* vurgu */
   --acc: #3ddc84;
   --acc-2: #22b866;
   --acc-3: #157a45;
-  --acc-ink: #0d5c34; /* açık zeminde yeşil metin */
+  --acc-ink: #0f7a45; /* açık zeminde yeşil metin */
+  --acc-tint: #e4f5ea; /* açık zeminde yeşil vurgu hücresi */
   --acc-soft: rgba(61, 220, 132, 0.12);
   --acc-glow: rgba(61, 220, 132, 0.35);
 
@@ -111,25 +114,23 @@ h3 { font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.25; font-weigh
 
 /* ---- bölümler ---- */
 .sec { position: relative; padding-block: clamp(64px, 9vw, 120px); }
-.sec-light { background: var(--lt-0); }
-.sec-soft { background: var(--lt-1); }
+.sec-light {
+  background: var(--lt-0);
+  background-image: radial-gradient(60% 50% at 100% 0%, rgba(61, 220, 132, 0.08), transparent 60%);
+}
+.sec-soft {
+  background: var(--lt-1);
+  background-image:
+    radial-gradient(55% 55% at 0% 100%, rgba(61, 220, 132, 0.10), transparent 60%),
+    linear-gradient(180deg, var(--lt-1), var(--lt-3));
+}
 .sec-dark {
   background: var(--bg-0);
   color: var(--tx-d);
   background-image:
-    linear-gradient(var(--line-d) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-d) 1px, transparent 1px);
-  background-size: 64px 64px;
-  background-position: center top;
-}
-.sec-dark::before {
-  /* grid’i yumuşat */
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 0%, transparent 30%, var(--bg-0) 95%);
-  opacity: 0.55;
+    radial-gradient(70% 60% at 88% 8%, rgba(61, 220, 132, 0.16), transparent 62%),
+    radial-gradient(50% 50% at 8% 100%, rgba(21, 122, 69, 0.22), transparent 65%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 55%, #050f0b 100%);
 }
 .sec-dark > * { position: relative; z-index: 1; }
 
@@ -325,10 +326,10 @@ h3 { font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.25; font-weigh
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(60% 70% at 85% 20%, rgba(61, 220, 132, 0.28), transparent 60%),
-    radial-gradient(40% 50% at 70% 90%, rgba(21, 122, 69, 0.35), transparent 65%),
-    radial-gradient(35% 45% at 5% 100%, rgba(34, 184, 102, 0.18), transparent 60%);
-  filter: blur(10px);
+    radial-gradient(60% 70% at 85% 20%, rgba(61, 220, 132, 0.26), transparent 62%),
+    radial-gradient(40% 50% at 70% 90%, rgba(21, 122, 69, 0.30), transparent 65%),
+    radial-gradient(35% 45% at 5% 100%, rgba(34, 184, 102, 0.14), transparent 60%);
+  filter: blur(24px);
 }
 .hero-in { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
 .hero h1 { margin: 10px 0 22px; }
@@ -414,6 +415,12 @@ h3 { font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.25; font-weigh
 @media (max-width: 980px) {
   .hero-in { grid-template-columns: 1fr; }
   .kpis { grid-template-columns: repeat(2, 1fr); }
+}
+/* grid çocukları min-content genişliğiyle sütunu taşırmasın (mobil yatay taşma) */
+.hero-in > *, .tour > *, .two > *, .panel, .panel-body, .rows, .row > * { min-width: 0; }
+@media (max-width: 560px) {
+  .row { grid-template-columns: 1fr auto; }
+  .row > :nth-child(3) { display: none; }
 }
 
 /* ---- stat şeridi ---- */
@@ -602,7 +609,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -30px rgba(1
 .compare th:last-child { color: var(--acc-ink); border-top: 3px solid var(--acc-2); }
 .compare td:first-child { font-weight: 600; width: 18%; }
 .compare td:nth-child(2) { color: var(--ink-muted); }
-.compare td:last-child { background: #f1faf4; color: var(--ink); }
+.compare td:last-child { background: var(--acc-tint); color: var(--ink); }
 .compare tr:last-child td { border-bottom: 0; }
 .compare-note { margin-top: 14px; font-size: 0.85rem; color: var(--ink-muted); }
 
@@ -640,10 +647,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -30px rgba(1
   padding: clamp(28px, 4vw, 52px);
   position: relative;
   overflow: hidden;
-  background-image:
-    linear-gradient(var(--line-d) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-d) 1px, transparent 1px);
-  background-size: 56px 56px;
+  background-image: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-0) 70%);
 }
 .commit::after { content: ""; position: absolute; right: -10%; top: -40%; width: 50%; height: 180%; background: radial-gradient(closest-side, rgba(61, 220, 132, 0.22), transparent); pointer-events: none; }
 .commit > * { position: relative; z-index: 1; }
@@ -698,7 +702,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -30px rgba(1
 @media (max-width: 700px) { .cta-facts { grid-template-columns: 1fr 1fr; } }
 
 /* ---- footer ---- */
-.footer { background: var(--bg-0); color: var(--tx-d); border-top: 1px solid var(--line-d); background-image: linear-gradient(var(--line-d) 1px, transparent 1px), linear-gradient(90deg, var(--line-d) 1px, transparent 1px); background-size: 64px 64px; }
+.footer { background: var(--bg-0); color: var(--tx-d); border-top: 1px solid var(--line-d); background-image: radial-gradient(50% 60% at 100% 0%, rgba(61, 220, 132, 0.10), transparent 60%), linear-gradient(180deg, var(--bg-0), #040c09); }
 .footer-top { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; padding: 64px 0 40px; border-bottom: 1px solid var(--line-d); align-items: end; }
 .footer-top img { height: 26px; width: auto; margin-bottom: 22px; }
 .footer-top h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); max-width: 22ch; margin-bottom: 20px; }
