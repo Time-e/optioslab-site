@@ -37,22 +37,41 @@ ${navbar("/")}
 <!-- HERO -->
 <section class="hero" data-hero data-lines='${JSON.stringify(heroChips.map((c) => c.line)).replace(/'/g, "&#39;")}'>
   <div class="wrap">
-    <div class="eyebrow">AI destekli iş sistemleri · İstanbul</div>
-    <h1>Tekrar eden işleri ekibiniz değil, <span class="hl">sisteminiz</span> yapsın</h1>
-    <p class="lead">Hazır paket değil: mevcut e-posta, WhatsApp, Excel, muhasebe ve CRM programlarınıza bağlanır, gerçek işlerinizle test edilir, ekibinizin günlük kullanımına açılır. Ekibiniz karar verir; sistem tekrar eden işi yürütür.</p>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="/iletisim/">Ücretsiz Analiz Planla ${arrow}</a>
-      <a class="btn btn-ghost" href="/cozumler/">Çözümleri İncele</a>
-    </div>
-    <p class="fine">İhtiyaç analizi ücretsiz · 20 dk · Başvuruya 1 iş günü içinde dönüş</p>
-
-    <div class="feed">
-      <div class="feed-tabs" role="tablist" aria-label="Çözüm alanları">
-        ${heroChips.map((c, i) => `<button class="chip${i === 0 ? " is-active" : ""}" type="button" role="tab">${esc(c.l)}</button>`).join("")}
+    <div class="hero-in">
+      <div>
+        <div class="eyebrow">AI destekli iş sistemleri · İstanbul</div>
+        <h1>Tekrar eden işleri ekibiniz değil, <span class="hl">sisteminiz</span> yapsın</h1>
+        <p class="rotating" aria-live="polite"><span>${esc(heroChips[0].line)}</span></p>
+        <p class="lead">Hazır paket değil: mevcut e-posta, WhatsApp, Excel, muhasebe ve CRM programlarınıza bağlanır, gerçek işlerinizle test edilir, ekibinizin günlük kullanımına açılır.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/iletisim/">Ücretsiz Analiz Planla ${arrow}</a>
+          <a class="btn btn-ghost" href="/cozumler/">Çözümleri İncele</a>
+        </div>
+        <p class="fine">İhtiyaç analizi ücretsiz · 20 dk · Başvuruya 1 iş günü içinde dönüş</p>
       </div>
-      <p class="rotating" aria-live="polite"><span>${esc(heroChips[0].line)}</span></p>
-      ${panelShell(kinds.map((k, i) => mockPanel(k, { active: i === 0 })).join(""), { title: "OptiosLab · Canlı akış" })}
-      <p class="panel-note">örnek ekran · veriler temsilidir</p>
+      <div>
+        <div class="app">
+          <div class="app-bar"><span>app.optioslab.com / canlı akış</span><span class="live">canlı</span></div>
+          <div class="app-body">
+            <div class="app-side" role="tablist" aria-label="Çözüm alanları">
+              <div class="who"><i></i>OptiosLab</div>
+              <div class="sec-t">Panel</div>
+              ${heroChips.map((c, i) => `<button class="chip${i === 0 ? " is-active" : ""}" type="button" role="tab">${esc(c.l)}</button>`).join("")}
+              <div class="sec-t">Sistem</div>
+              <div class="dim">Onaylar</div><div class="dim">Akışlar</div><div class="dim">Entegrasyonlar</div><div class="dim">Ayarlar</div>
+            </div>
+            <div class="app-main">
+              ${kinds.map((k, i) => mockPanel(k, { active: i === 0 })).join("")}
+            </div>
+          </div>
+          <div class="app-foot"><span>son güncelleme <b>az önce</b></span><span>insan onayı bekleyen <b>3</b></span></div>
+        </div>
+        <p class="panel-note">örnek ekran · veriler temsilidir</p>
+      </div>
+    </div>
+    <div class="logos">
+      <span class="mono">Bağlandığı programlardan bazıları</span>
+      <ul>${["Gmail", "WhatsApp Business", "Logo", "Parasüt", "HubSpot", "Trendyol", "Google Sheets", "Notion", "Slack", "Netsis"].map((n) => `<li>${esc(n)}</li>`).join("")}</ul>
     </div>
   </div>
 </section>
