@@ -134,18 +134,23 @@ h3 { font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.25; font-weigh
 }
 .sec-dark > * { position: relative; z-index: 1; }
 
-/* eğik kenarlar (Mockupsoft) */
+/* eğik kenarlar (Mockupsoft)
+   Eğik bölüm komşularının üstüne tam --skew kadar biner ve z-index ile üstte kalır;
+   böylece clip-path'in açtığı üçgen boşlukta gövde zemini değil komşu bölümün zemini görünür. */
 .skew {
   clip-path: polygon(0 var(--skew), 100% 0, 100% calc(100% - var(--skew)), 0 100%);
   padding-block: calc(clamp(64px, 9vw, 120px) + var(--skew));
-  margin-block: calc(var(--skew) * -0.5);
+  margin-block: calc(var(--skew) * -1);
+  z-index: 2;
 }
 .skew-top-only {
   clip-path: polygon(0 var(--skew), 100% 0, 100% 100%, 0 100%);
   padding-top: calc(clamp(64px, 9vw, 120px) + var(--skew));
-  margin-top: calc(var(--skew) * -0.5);
+  margin-top: calc(var(--skew) * -1);
   margin-bottom: 0;
+  z-index: 2;
 }
+.hero, .page-hero { margin-bottom: calc(var(--skew) * -1); z-index: 2; }
 .cta.skew-top-only { padding-bottom: clamp(72px, 9vw, 120px); }
 .skew-rev {
   clip-path: polygon(0 0, 100% var(--skew), 100% 100%, 0 calc(100% - var(--skew)));
